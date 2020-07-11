@@ -1,0 +1,86 @@
+struct TrieNode{
+  struct   TrieNode * kids[26];
+        bool isEndOfWord;
+TrieNode() {
+        for(int i=0;i<26;i++)
+           kids[i]=NULL;
+           isEndOfWord=NULL;
+    }
+};
+
+class Trie {
+public:
+ 
+ TrieNode * root;
+    Trie(vector<string>& words){
+        root=new TrieNode();
+        for(int i=0; i<words.size(); ++i)
+            addWord(words[i]);
+    }
+    
+     void addWord(const string& word) {
+        TrieNode * current=root;
+        for(int i =0;i<word.size();i++)
+        {
+            int index=word[i]-'a';
+            if(current->kids[index]==NULL)
+                current->kids[index]=new TrieNode();
+                current=current->kids[index];
+            
+        }
+        current->isEndOfWord=true;
+
+    }
+    
+};
+
+class Solution {
+public:
+    vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
+        Trie trie=Trie(words);
+        vector<vector<int>> vis(board.size(),vector<int>(board[0].size()));
+       
+        set<string> result_set;
+        for(int x=0; x<board.size(); ++x)
+            for(int y=0; y<board[0].size(); ++y)
+                findWords(board,"",x,y,trie.root,result_set,vis);
+        vector<string> res(result_set.begin(),result_set.end());
+       /* set<string>:: iterator it=result_set.begin();
+        while(it!=result_set.end())
+        {cout<<*it<<endl;
+        res.push_back(*it);
+        ++ it;
+        }*/
+        vector<string> result;
+        for(auto it:result_set)    result.push_back(it);
+        
+        return res;
+        }
+    
+     void findWords(vector<vector<char>>& board, string word, int x,int y,TrieNode * root,  set<string>& result_set, vector<vector<int>>& vis ) {
+            if(x<0 ||y<0 || x>board.size()-1 ||y>board[0].size()-1 || board[x][y]==' '|| vis[x][y]==1)
+                return ;
+            if(root->kids[board[x][y]-'a']!=NULL)
+                
+            {
+                
+                
+                word+=board[x][y];
+
+                
+                root=root->kids[board[x][y]-'a'];
+                if( root-> isEndOfWord==true)
+                {result_set.insert(word);
+                 root-> isEndOfWord==false;
+                    //cout<<word<<endl;} 
+                }
+                vis[x][y]=1;
+                findWords(board, word, x+1, y, root,result_set,vis  ) ;
+                findWords(board, word, x-1, y, root,result_set,vis  ) ;
+                findWords(board, word, x, y+1, root,result_set,vis  ) ;
+                findWords(board, word, x, y-1, root,result_set,vis  ) ;
+                vis[x][y]=0;
+        }
+     }
+
+};

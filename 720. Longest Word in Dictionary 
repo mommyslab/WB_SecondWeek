@@ -1,0 +1,70 @@
+
+ struct TrieNode{
+ 
+    TrieNode  * children[26];
+    bool isEnd;
+ 
+    TrieNode(){
+        isEnd=false;
+        for(int i=0;i<26;i++)
+            children[i]=NULL;
+ 
+    }
+};
+ 
+void DFS( TrieNode *  root,string & word)
+{
+    cout << word << endl;
+     TrieNode *  current=root;
+    string new_word = "";
+    for(int i=0;i<26;i++)
+    {
+        if(current->children[i]!=NULL && current->children[i]->isEnd != false){
+            string temp=word+ char('a' + i);
+            DFS(current->children[i],temp);
+            if(size(temp)>size(new_word))
+                new_word=temp;     
+    }
+ 
+    }
+    if (new_word > word)
+        word = new_word;
+ 
+         return  ;
+}
+ 
+class Solution {
+public:
+ 
+ 
+ 
+    void addWord(const string& word,TrieNode  *root) {
+        TrieNode  *current=root; 
+        for(int i =0;i<word.size();i++)
+        {
+            int index=word[i]-'a';
+            if(current->children[index]==NULL){
+                current->children[index]=new TrieNode();
+            }
+                current=current->children[index];
+        }
+        current->isEnd=true;
+    }
+    string longestWord(vector<string>& words) {
+        TrieNode  *root=new TrieNode();
+ 
+ 
+ 
+ 
+ 
+          for(int i=0; i<words.size(); ++i)
+            addWord(words[i],root);
+ 
+     string res= "";
+     DFS(root, res);
+ 
+ 
+    return res;
+ 
+    }
+};

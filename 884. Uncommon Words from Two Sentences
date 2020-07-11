@@ -1,0 +1,41 @@
+class Solution {
+public:
+    vector<string> uncommonFromSentences(string A, string B) {
+         vector<string> uncommonFromSentences;
+     istringstream iss;
+map<string,int>   firstwords;
+  map<string,int>secondwords;
+
+        string word;
+        iss.str(A);
+        while(iss >> word)
+        {
+            if(firstwords.count(word)==1)
+                firstwords[word]+=1;
+            else
+                firstwords[word]=1;
+            }
+        iss.clear();
+          iss.str(B);
+        while(iss >> word)
+        {
+            if(secondwords.count(word)==1)
+                secondwords[word]+=1;
+            else
+                secondwords[word]=1;
+            }
+         iss.clear();
+        for (map<string, int>::iterator it=firstwords.begin(); it!=firstwords.end(); ++it)
+        {
+            if(secondwords.find(it->first)==secondwords.end() && it->second==1)
+                uncommonFromSentences.push_back(it->first);
+        }
+        
+        for (map<string, int>::iterator it=secondwords.begin(); it!=secondwords.end(); ++it)
+        {
+            if(firstwords.find(it->first)==firstwords.end() && it->second==1)
+                uncommonFromSentences.push_back(it->first);
+        }
+        return uncommonFromSentences;
+    }
+};

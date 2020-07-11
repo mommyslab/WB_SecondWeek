@@ -1,0 +1,16 @@
+class Solution {
+public:
+    bool isHappy(int n) {
+        map<long long, bool> vis; // to check if i visited the number before
+        while(n != 1 && vis[n] != 0) { // if the number is 1 then we got our solution if it's not 1 but it's visited before then it's a cycle and we got our solution
+            vis[n] = 1; // make the current number visited aka checked
+            long long newN = 0; // create a new number to make the old n to change
+            while(n != 0) { // this loop to get each digit and make it power 2 and then sum it to newN
+                newN += (n % 10) * (n % 10);
+                n /= 10;
+            }
+            n = newN;// here we replace the old n with newN so we get our new number
+        }
+        return n == 1;//
+    }
+};

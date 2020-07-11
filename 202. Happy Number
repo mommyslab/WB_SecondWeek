@@ -1,0 +1,16 @@
+class Solution {
+public:
+    bool isHappy(int n) {
+        map<long long, bool> vis;
+        while(n != 1 && !vis[n]) {
+            vis[n] = 1;
+            long long newN = 0;
+            while(n != 0) {
+                newN += (n % 10) * (n % 10);
+                n /= 10;
+            }
+            n = newN;
+        }
+        return n == 1;
+    }
+};
